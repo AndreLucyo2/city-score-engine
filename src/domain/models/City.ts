@@ -7,9 +7,20 @@ export type City = {
   
   // Novos dados adicionados pelas APIs integradas:
   weatherDesc?: string;
-  population?: number;
+  population?: number; // do País
   currency?: string;
   gdp?: number;
   countryName?: string;
   admin1?: string;
+  
+  // Detalhes extras de Geocoding
+  cityPopulation?: number;
+  timezone?: string;
+  elevation?: number;
+
+  // Detalhes extras de Qualidade de Vida (0 a 100)
+  healthcare?: number;
+  education?: number;
+  environment?: number;
+  qualityOfLifeScore?: number;
 };

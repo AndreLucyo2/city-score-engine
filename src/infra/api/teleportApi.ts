@@ -2,6 +2,9 @@ export type QualityOfLifeData = {
   qualityOfLifeIndex: number;
   safetyIndex: number;
   costOfLivingIndex: number;
+  healthcare?: number;
+  education?: number;
+  environment?: number;
 };
 
 /**
@@ -54,7 +57,10 @@ export async function getQualityOfLife(cityName: string): Promise<QualityOfLifeD
     return {
       qualityOfLifeIndex: scoresData.teleport_city_score || 0,
       safetyIndex: getScore('Safety'),
-      costOfLivingIndex: getScore('Cost of Living')
+      costOfLivingIndex: getScore('Cost of Living'),
+      healthcare: getScore('Healthcare'),
+      education: getScore('Education'),
+      environment: getScore('Environmental Quality')
     };
   } catch (error) {
     // console.log('[teleportApi] API offline ou cidade inexistente. Usando fallback.');

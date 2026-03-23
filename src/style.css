@@ -290,3 +290,53 @@ input[type="text"]:focus {
     z-index: 2;
   }
 }
+
+/* Novos Detalhes Ricos do Card */
+.metric-group-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--primary);
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
+}
+
+.metric-indexes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.index-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  text-align: center;
+}
+
+.index-item .metric-label {
+  font-size: 0.7rem;
+}
+
+.pill {
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.15rem 0.6rem;
+  border-radius: 12px;
+  border: 1px solid currentColor;
+  background: rgba(0,0,0,0.5);
+}
+
+.pill-off {
+  color: var(--text-muted);
+  border-color: rgba(255,255,255,0.1);
+  font-weight: normal;
+  font-size: 0.75rem;
+}

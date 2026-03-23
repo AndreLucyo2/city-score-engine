@@ -9,6 +9,9 @@ export type GeoData = {
   countryCode: string;
   countryName: string;
   admin1?: string;
+  cityPopulation?: number;
+  timezone?: string;
+  elevation?: number;
 };
 
 /**
@@ -58,7 +61,10 @@ export async function getCoordinates(query: string): Promise<GeoData | undefined
       lon: bestMatch.longitude,
       countryCode: bestMatch.country_code,
       countryName: bestMatch.country,
-      admin1: bestMatch.admin1
+      admin1: bestMatch.admin1,
+      cityPopulation: bestMatch.population,
+      timezone: bestMatch.timezone,
+      elevation: bestMatch.elevation
     };
   } catch (error) {
     console.error('[weatherApi getCoordinates] Falha de resolução:', error);
