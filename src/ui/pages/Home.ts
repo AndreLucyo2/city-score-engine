@@ -14,10 +14,13 @@ export function renderHome(container: HTMLElement) {
         <section class="glass-card form-section slide-up">
           <form id="compare-form" class="compare-form">
             <div class="input-group">
-              <input type="text" id="city1" placeholder="Ex: Berlim" required autocomplete="off" />
+              <input type="text" id="city1" placeholder="Ex: Toledo, PR" required autocomplete="off" />
               <div class="vs-badge">VS</div>
-              <input type="text" id="city2" placeholder="Ex: Tokyo" required autocomplete="off" />
+              <input type="text" id="city2" placeholder="Ex: Marau, BR" required autocomplete="off" />
             </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: -0.5rem; text-align: center">
+              💡 Dica: Para cidades com nomes comuns, digite sua sigla do Estado ou País (ex: <strong>Toledo, PR</strong> ou <strong>Toledo, BR</strong>) para garantir a localização exata de Geocoding.
+            </p>
             <button type="submit" class="btn-primary" id="compare-btn">
               <span>Comparar Cidades</span>
             </button>

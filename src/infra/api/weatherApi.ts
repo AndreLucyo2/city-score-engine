@@ -1,33 +1,77 @@
-export async function getCityTemperature(cityName: string): Promise<number> {
+export type WeatherData = {
+  temperature: number;
+  description: string;
+};
+
+export type GeoData = {
+  lat: number;
+  lon: number;
+  countryCode: string;
+  countryName: string;
+  admin1?: string;
+};
+
+/**
+ * Utilitário de Geocoding (Open-Meteo) para obter Lat/Lon e País
+ * Essencial para o fluxo em cascata das APIs
+ */
+export async function getCoordinates(cityName: string): Promise<GeoData | undefined> {
   try {
-    // 1. Pega as Coordenadas (Latitude e Longitude) via Open-Meteo Geocoding
-    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=pt&format=json`;
-    const geoResponse = await fetch(geoUrl);
+    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`;
+    const response = await fetch(geoUrl);
     
-    if (!geoResponse.ok) {
-      throw new Error(`Falha na API de geocoding ao buscar ${cityName}`);
-    }
+    if (!response.ok) return undefined;
     
-    const geoData = await geoResponse.json();
-
-    if (!geoData.results || geoData.results.length === 0) {
-      throw new Error(`Cidade "${cityName}" não encontrada ou sem dados climáticos válidos.`);
-    }
-
-    const { latitude, longitude } = geoData.results[0];
-
-    // 2. Com as Exatas Coordenadas, Busca o Clima (Open-Meteo)
-    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
-    const weatherResponse = await fetch(weatherUrl);
+    const data = await response.json();
+    if (!data.results || data.results.length === 0) return undefined;
     
-    if (!weatherResponse.ok) {
-      throw new Error(`Falha ao buscar temperatura real para as coordenadas de ${cityName}`);
-    }
-    
-    const weatherData = await weatherResponse.json();
-    return weatherData.current_weather.temperature;
+    const firstMatch = data.results[0];
+    return {
+      lat: firstMatch.latitude,
+      lon: firstMatch.longitude,
+      countryCode: firstMatch.country_code,
+      countryName: firstMatch.country,
+      admin1: firstMatch.admin1
+    };
   } catch (error) {
-    console.error(`Erro em getCityTemperature:`, error);
-    throw error; // Repassa erro para a camada App
+    console.error('[weatherApi getCoordinates] Falha de resolução:', error);
+    return undefined;
+  }
+}
+
+/**
+ * Busca o clima atual na Open-Meteo usando latitude e longitude.
+ * @param lat Latitude
+ * @param lon Longitude
+ */
+export async function getWeather(lat: number, lon: number): Promise<WeatherData | undefined> {
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      return undefined; // Fallback silencioso conforme exigido
+    }
+    
+    const data = await response.json();
+    
+    if (!data.current_weather) {
+      return undefined;
+    }
+
+    const code = data.current_weather.weathercode;
+    let desc = 'Desconhecido';
+    if (code === 0) desc = 'Céu Limpo ☀️';
+    else if (code <= 3) desc = 'Nublado ⛅';
+    else if (code <= 69) desc = 'Chuva Leve ☔';
+    else if (code <= 99) desc = 'Tempestade ⛈️';
+
+    return {
+      temperature: data.current_weather.temperature,
+      description: desc
+    };
+  } catch (error) {
+    console.error('[weatherApi] Falha na integração:', error);
+    return undefined;
   }
 }
