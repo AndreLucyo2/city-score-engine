@@ -6,7 +6,15 @@ export function renderHome(container: HTMLElement) {
   container.innerHTML = `
     <div class="home-container">
       <header class="app-header fade-in">
-        <h1>🌍 City Score Engine</h1>
+        <h1 style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+            <path d="M2 14l3.5-3.5a2 2 0 0 1 2.8 0l3.4 3.4a2 2 0 0 0 2.8 0L22 6" stroke="var(--accent)"></path>
+          </svg>
+          City Score Engine
+        </h1>
         <p>Transformando dados em decisão prática. Em qual cidade vale a pena morar?</p>
       </header>
 
