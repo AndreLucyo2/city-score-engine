@@ -31,6 +31,19 @@ export function renderHome(container: HTMLElement) {
           <!-- Os cards das cidades ou spinners aparecerão aqui -->
         </section>
       </main>
+
+      <footer class="fade-in" style="animation-delay: 0.6s; text-align: center; margin-top: 4rem; margin-bottom: 1rem; font-size: 0.8rem; color: var(--text-muted);">
+        <p style="opacity: 0.8">Fontes Oficiais de Dados:</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 0.5rem; flex-wrap: wrap">
+          <a href="https://open-meteo.com" target="_blank" style="color: var(--text-muted); text-decoration: underline;">Open-Meteo</a>
+          <a href="https://teleport.org" target="_blank" style="color: var(--text-muted); text-decoration: underline;">Teleport</a>
+          <a href="https://data.worldbank.org/" target="_blank" style="color: var(--text-muted); text-decoration: underline;">Banco Mundial</a>
+          <a href="https://restcountries.com" target="_blank" style="color: var(--text-muted); text-decoration: underline;">REST Countries</a>
+        </div>
+        <p style="margin-top: 1rem; opacity: 0.5; font-size: 0.70rem">
+          * Algumas cidades menores sem cobertura das agências utilizam modelos de aproximação determinísticos para manter o app visualmente testável.
+        </p>
+      </footer>
     </div>
   `;
 
