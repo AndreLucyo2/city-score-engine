@@ -15,9 +15,15 @@ export type GeoData = {
  * Utilitário de Geocoding (Open-Meteo) para obter Lat/Lon e País
  * Essencial para o fluxo em cascata das APIs
  */
-export async function getCoordinates(cityName: string): Promise<GeoData | undefined> {
+export async function getCoordinates(query: string): Promise<GeoData | undefined> {
   try {
-    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`;
+    // Permite que o usuário digite "Toledo, PR" ou "Toledo - BR"
+    const parts = query.split(/[,-]/).map(p => p.trim());
+    const cityName = parts[0];
+    const qualifier = parts.length > 1 ? parts[1].toLowerCase() : '';
+
+    // Busca 20 resultados em vez de apenas 1
+    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=20&language=en&format=json`;
     const response = await fetch(geoUrl);
     
     if (!response.ok) return undefined;
@@ -25,13 +31,34 @@ export async function getCoordinates(cityName: string): Promise<GeoData | undefi
     const data = await response.json();
     if (!data.results || data.results.length === 0) return undefined;
     
-    const firstMatch = data.results[0];
+    // Fallback normal é o primeiro match (cidade mais famosa com aquele nome)
+    let bestMatch = data.results[0];
+
+    // Se o usuário digitou uma sigla (qualifier), tentamos encontrar na array!
+    if (qualifier) {
+      const foundMatch = data.results.find((res: any) => {
+        const countryCode = (res.country_code || '').toLowerCase();
+        const country = (res.country || '').toLowerCase();
+        const state = (res.admin1 || '').toLowerCase();
+
+        return countryCode === qualifier || 
+               country === qualifier || 
+               state === qualifier ||
+               state.includes(qualifier) ||
+               country.includes(qualifier);
+      });
+
+      if (foundMatch) {
+        bestMatch = foundMatch; // Sobrescreve pelo que deu o match perfeito!
+      }
+    }
+
     return {
-      lat: firstMatch.latitude,
-      lon: firstMatch.longitude,
-      countryCode: firstMatch.country_code,
-      countryName: firstMatch.country,
-      admin1: firstMatch.admin1
+      lat: bestMatch.latitude,
+      lon: bestMatch.longitude,
+      countryCode: bestMatch.country_code,
+      countryName: bestMatch.country,
+      admin1: bestMatch.admin1
     };
   } catch (error) {
     console.error('[weatherApi getCoordinates] Falha de resolução:', error);

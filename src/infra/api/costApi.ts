@@ -21,7 +21,7 @@ export async function getCost(cityName: string): Promise<CostData | undefined> {
       costIndex: data.cpi_and_rent_index
     };
   } catch (error) {
-    console.error('[costApi Numbeo] Resgatando erro:', error);
+    // console.warn('[costApi] Numbeo indisponível (CORS/Chave). Usando fallback.');
     return undefined;
   }
 }

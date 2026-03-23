@@ -57,7 +57,7 @@ export async function getQualityOfLife(cityName: string): Promise<QualityOfLifeD
       costOfLivingIndex: getScore('Cost of Living')
     };
   } catch (error) {
-    console.error('[teleportApi] Falha na integração:', error);
+    // console.log('[teleportApi] API offline ou cidade inexistente. Usando fallback.');
     return undefined; // Nunca quebra a app
   }
 }
