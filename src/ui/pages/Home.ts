@@ -6,7 +6,15 @@ export function renderHome(container: HTMLElement) {
   container.innerHTML = `
     <div class="home-container">
       <header class="app-header fade-in">
-        <h1>🌍 City Score Engine</h1>
+        <h1 style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+            <path d="M2 14l3.5-3.5a2 2 0 0 1 2.8 0l3.4 3.4a2 2 0 0 0 2.8 0L22 6" stroke="var(--accent)"></path>
+          </svg>
+          City Score Engine
+        </h1>
         <p>Transformando dados em decisão prática. Em qual cidade vale a pena morar?</p>
       </header>
 
@@ -14,10 +22,13 @@ export function renderHome(container: HTMLElement) {
         <section class="glass-card form-section slide-up">
           <form id="compare-form" class="compare-form">
             <div class="input-group">
-              <input type="text" id="city1" placeholder="Ex: Berlim" required autocomplete="off" />
+              <input type="text" id="city1" placeholder="Ex: Toledo, PR" required autocomplete="off" />
               <div class="vs-badge">VS</div>
-              <input type="text" id="city2" placeholder="Ex: Tokyo" required autocomplete="off" />
+              <input type="text" id="city2" placeholder="Ex: Marau, BR" required autocomplete="off" />
             </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: -0.5rem; text-align: center">
+              💡 Dica: Para cidades com nomes comuns, digite sua sigla do Estado ou País (ex: <strong>Toledo, PR</strong> ou <strong>Toledo, BR</strong>) para garantir a localização exata de Geocoding.
+            </p>
             <button type="submit" class="btn-primary" id="compare-btn">
               <span>Comparar Cidades</span>
             </button>
@@ -28,6 +39,19 @@ export function renderHome(container: HTMLElement) {
           <!-- Os cards das cidades ou spinners aparecerão aqui -->
         </section>
       </main>
+
+      <footer class="fade-in" style="animation-delay: 0.6s; text-align: center; margin-top: 4rem; margin-bottom: 1rem; font-size: 0.8rem; color: var(--text-muted);">
+        <p style="opacity: 0.8">Fontes Oficiais de Dados:</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 0.5rem; flex-wrap: wrap">
+          <a href="https://open-meteo.com" target="_blank" style="color: var(--text-muted); text-decoration: underline;">Open-Meteo</a>
+          <a href="https://teleport.org" target="_blank" style="color: var(--text-muted); text-decoration: underline;">Teleport</a>
+          <a href="https://data.worldbank.org/" target="_blank" style="color: var(--text-muted); text-decoration: underline;">Banco Mundial</a>
+          <a href="https://restcountries.com" target="_blank" style="color: var(--text-muted); text-decoration: underline;">REST Countries</a>
+        </div>
+        <p style="margin-top: 1rem; opacity: 0.5; font-size: 0.70rem">
+          * Algumas cidades menores sem cobertura das agências utilizam modelos de aproximação determinísticos para manter o app visualmente testável.
+        </p>
+      </footer>
     </div>
   `;
 
